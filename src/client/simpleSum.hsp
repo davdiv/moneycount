@@ -1,0 +1,63 @@
+var klass = require("hsp/klass");
+var Takings = require("./model/takings.hsp.js");
+var sheet = require("./sheet.hsp.js");
+
+var SimpleSumCtrl = klass({
+    $constructor: function () {
+        this.sumTakings = new Takings();
+        this.takings = [];
+        this.sumTakings.subTakings = this.takings;
+        this.activeTakings = this.sumTakings;
+        this.edit = true;
+    },
+    clickTab: function (event,tab) {
+        event.preventDefault();
+        this.sumTakings.recompute();
+        this.activeTakings = tab;
+    },
+    addSubTakings : function () {
+        var newTaking = new Takings();
+        this.takings.push(newTaking);
+        this.activeTakings = newTaking;
+    },
+    clickCloseSubTakings: function (event, index, takings) {
+        event.stopPropagation();
+        event.preventDefault();
+        if (this.takings[index] !== takings) {
+            throw new Error("Invalid index"); // safety check
+        }
+        this.takings.splice(index, 1);
+        this.sumTakings.recompute();
+        if (this.activeTakings === takings) {
+            var length = this.takings.length;
+            if (length == 0) {
+                this.activeTakings = this.sumTakings;
+            } else {
+                this.activeTakings = this.takings[index < length ? index : index-1];
+            }
+        }
+    }
+});
+
+
+# template simpleSum using controller:SimpleSumCtrl
+    <input type="checkbox" model="{controller.edit}"/> Edition
+    <ul class="nav nav-tabs">
+        <li class="{'active': controller.activeTakings === controller.sumTakings}"><a onclick="{controller.clickTab(event,controller.sumTakings)}" href="#">Total</a></li>
+        {foreach index,takings in controller.takings}
+            <li class="{'active': controller.activeTakings === takings}">
+            <a href="#" onclick="{controller.clickTab(event,takings)}">
+                Page {index+1} &nbsp;<a href="#" style="position:absolute;top:7px;right:5px;" class="close" onclick="{controller.clickCloseSubTakings(event,index,takings)}">&times;</a>
+            </a>
+            </li>
+        {/foreach}
+        <li><a href="#" onclick="{controller.addSubTakings()}"><span class="glyphicon glyphicon-plus"></span></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <#sheet takings="{controller.activeTakings}" edit="{controller.edit}" />
+        </div>
+    </div>
+# /template
+
+module.exports = simpleSum;

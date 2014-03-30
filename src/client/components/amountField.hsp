@@ -1,0 +1,44 @@
+var klass = require("hsp/klass");
+var formatCurrency = require("../utils/formatCurrency.hsp.js");
+
+var AmountFieldController = klass({
+    attributes: {
+        value: {
+            binding: "2-way",
+            type: "float"
+        },
+        error: {
+            binding: "2-way",
+            type: "boolean"
+        },
+        onchange : {
+            type : "callback"
+        }
+    },
+    $init: function() {
+      this.onValueChange();
+    },
+    onValueChange : function () {
+        this.internalValue = formatCurrency(this.value);
+        this.update();
+    },
+    onInternalValueChange : function() {
+        this.value = parseFloat(this.internalValue);
+        this.update();
+    },
+    update: function () {
+        this.error = !(typeof this.value == "number") || isNaN(this.value);
+        this.onchange();
+    },
+    blur: function () {
+        if (!this.error) {
+            this.internalValue = formatCurrency(this.value);
+        }
+    }
+});
+
+# template amountField using c:AmountFieldController
+<input type="text" value="{c.internalValue}" onblur="{c.blur()}" class="form-control input-sm"/>
+# /template
+
+module.exports = amountField;

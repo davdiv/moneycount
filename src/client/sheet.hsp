@@ -1,0 +1,36 @@
+var klass = require("hsp/klass");
+var Takings = require("./model/takings.hsp.js");
+var takingsDisplay = require("./takings.hsp.js");
+var formatCurrency = require("./utils/formatCurrency.hsp.js");
+
+var Controller = klass({
+    attributes: {
+        takings: {
+            type: "object",
+            binding: "2-way"
+        },
+        edit: {
+            type: "boolean",
+            binding: "1-way"
+        }
+    }
+});
+
+# template sheet using controller:Controller
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+            <img src="/images/cashbox.png" class="img-responsive" style="position:absolute;right:0px;top:0px;">
+            <h1>Caisse</h1>
+            <div style="padding-right:128px;padding-bottom:30px;">
+            <table class="table">
+            <tr><th>Montant</th><td>{formatCurrency(controller.takings.total.general.total)}</td></tr>
+            </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+        <#takingsDisplay takings="{controller.takings}" edit="{controller.edit && !controller.takings.subTakings}"/>
+    <hr>
+# /template
+
+module.exports = sheet;

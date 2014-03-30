@@ -1,0 +1,9 @@
+var sheet = require("./simpleSum.hsp.js");
+
+# template hello
+<div class="container-fluid">
+<#sheet />
+</div>
+# /template
+
+module.exports = hello;

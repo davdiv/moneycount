@@ -1,0 +1,25 @@
+var klass = require("hsp/klass");
+
+var TextFieldController = klass({
+    attributes: {
+        value: {
+            binding: "2-way",
+            type: "object"
+        }
+    },
+    $init: function() {
+        this.onValueChange();
+    },
+    onValueChange : function () {
+        this.internalValue = this.value ? this.value : "";
+    },
+    onInternalValueChange : function() {
+        this.value = this.internalValue;
+    }
+});
+
+# template textField using c:TextFieldController
+<input type="text" value="{c.internalValue}" class="form-control input-sm"/>
+# /template
+
+module.exports = textField;

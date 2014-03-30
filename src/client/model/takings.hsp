@@ -1,0 +1,91 @@
+var klass = require("hsp/klass");
+
+var COINS = [ 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01 ];
+var BANKNOTES = [ 500, 200, 100, 50, 20, 10, 5 ];
+
+var initObject = function (unitValue) {
+    return {
+        unitValue : unitValue,
+        number : 0,
+        total : 0
+    };
+};
+
+var computeTotal = function (objects) {
+    var number = 0;
+    var total = 0;
+    for (var i = 0, l = objects.length; i < l; i++) {
+        var curObject = objects[i];
+        if (typeof curObject.unitValue == "number") {
+            curObject.total = curObject.number * curObject.unitValue;
+        }
+        if (typeof curObject.number == "number") {
+            number += curObject.number;
+        } else {
+            // this is for checks
+            number += 1;
+        }
+        total += curObject.total;
+    }
+    return {
+        number : number,
+        total : total
+    };
+};
+
+var add = function (sumArray, toBeAdded) {
+    if (sumArray.length != toBeAdded.length) {
+        throw new Exception("Different array sizes when adding takings.");
+    }
+    for (var i = 0, l = sumArray.length; i < l; i++) {
+        var curSumItem = sumArray[i];
+        var curToBeAddedItem = toBeAdded[i];
+        if (curSumItem.unitValue !== curToBeAddedItem.unitValue) {
+            throw new Exception("Different unit values when adding takings.")
+        }
+        curSumItem.number += curToBeAddedItem.number;
+    }
+};
+
+var Takings = klass({
+    $constructor : function () {
+        this.coins = COINS.map(initObject);
+        this.banknotes = BANKNOTES.map(initObject);
+        this.checks = [];
+        this.subTakings = null;
+        this.recompute();
+    },
+    recomputeWithSubTakings : function () {
+        var coins = COINS.map(initObject);
+        var banknotes = BANKNOTES.map(initObject);
+        var checks = [];
+        var subTakings = this.subTakings;
+        for (var i = 0, l = subTakings.length; i < l; i++) {
+            var curSubTaking = subTakings[i];
+            curSubTaking.recompute();
+            add(coins, curSubTaking.coins);
+            add(banknotes, curSubTaking.banknotes);
+            checks.push.apply(checks, curSubTaking.checks);
+        }
+        this.coins = coins;
+        this.banknotes = banknotes;
+        this.checks = checks;
+    },
+    recompute : function () {
+        if (this.subTakings) {
+            this.recomputeWithSubTakings();
+        }
+        var totalCoins = computeTotal(this.coins);
+        var totalBanknotes = computeTotal(this.banknotes);
+        var totalChecks = computeTotal(this.checks);
+        var general = computeTotal([ totalCoins, totalBanknotes, totalChecks ]);
+        this.total = {
+            coins : totalCoins,
+            banknotes : totalBanknotes,
+            checks : totalChecks,
+            general : general
+        };
+    }
+});
+
+module.exports = Takings;

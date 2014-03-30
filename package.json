@@ -1,0 +1,24 @@
+{
+  "name": "moneycount",
+  "version": "0.0.1",
+  "description": "Software to help counting cash and putting to the bank.",
+  "author": {
+    "name": "DivDE",
+    "email": "divde@free.fr"
+  },
+  "license": {
+    "type": "AGPLv3",
+    "url": "http://www.gnu.org/licenses/agpl-3.0"
+  },
+  "dependencies": {
+    "express": "3.5.0",
+    "gulp": "3.5.6",
+    "gulp-clean": "0.2.4",
+    "gulp-hsp-compiler": "0.0.2",
+    "gulp-hsp-transpiler": "0.0.1",
+    "gulp-newer": "0.3.0",
+    "hashspace": "0.0.1",
+    "noder-js": "1.2.0-rc0",
+    "optimist": "0.6.1"
+  }
+}
