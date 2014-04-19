@@ -17,6 +17,7 @@
     "gulp-hsp-compiler": "0.0.2",
     "gulp-hsp-transpiler": "0.0.1",
     "gulp-newer": "0.3.0",
+    "gulp-util": "2.2.14",
     "hashspace": "0.0.1",
     "noder-js": "1.2.0-rc0",
     "optimist": "0.6.1"

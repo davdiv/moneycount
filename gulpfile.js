@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var clean = require("gulp-clean");
 var newer = require("gulp-newer");
+var gutil = require('gulp-util');
 var hspCompiler = require("gulp-hsp-compiler");
 var hspTranspiler = require("gulp-hsp-transpiler");
 
@@ -11,7 +12,7 @@ gulp.task("default", function () {
     gulp.src("src/client/**/*.hsp").pipe(newer({
         dest : "build/client",
         ext : ".js"
-    })).pipe(hspCompiler()).pipe(hspTranspiler()).pipe(gulp.dest("build/client"));
+    })).pipe(hspCompiler().on('error', gutil.log)).pipe(hspTranspiler().on('error', gutil.log)).pipe(gulp.dest("build/client"));
     gulp.src(["src/client/**/*.html", "src/client/**/*.png"]).pipe(gulp.dest("build/client"));
 });
 
