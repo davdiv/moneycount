@@ -1,6 +1,7 @@
 var klass = require("hsp/klass");
 var Takings = require("./model/takings.hsp.js");
 var takingsDisplay = require("./takings.hsp.js");
+var textDisplay = require("./text.hsp.js");
 var formatCurrency = require("./utils/formatCurrency.hsp.js");
 
 var Controller = klass({
@@ -30,6 +31,7 @@ var Controller = klass({
     </div>
     <hr>
         <#takingsDisplay takings="{controller.takings}" edit="{controller.edit && !controller.takings.subTakings}"/>
+        <#textDisplay takings="{controller.takings}" />
     <hr>
 # /template
 

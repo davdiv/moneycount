@@ -1,0 +1,40 @@
+var formatCurrency = require("./utils/formatCurrency.hsp.js");
+var formatDate = require("./dates/format.hsp.js").date;
+var newLine = "\n";
+var tab = "\t";
+
+# template section(title, itemsArray, total)
+    {if total.number > 0}
+        {newLine}&nbsp;{title}&nbsp;{tab}Nombre{tab}Montant
+        {foreach item in itemsArray}
+            {if item.number > 0}
+              {newLine}&nbsp;&nbsp;{formatCurrency(item.unitValue)}{tab}{item.number}{tab}{formatCurrency(item.total)}
+            {/if}
+        {/foreach}
+        {newLine}&nbsp;Total:&nbsp;{tab}{total.number}{tab}{formatCurrency(total.total)}{newLine}
+    {/if}
+# /template
+
+# template chequesSection(title, itemsArray, total)
+{if total.number > 0}
+    {newLine}&nbsp;{title}{tab}Date{"     "}{tab}Montant&nbsp;{tab}Banque
+    {foreach item in itemsArray}
+       {newLine}&nbsp;&nbsp;{item.checkNumber||"       "}{tab}{formatDate(item.checkDate)||"          "}{tab}{formatCurrency(item.total)}&nbsp;&nbsp;{tab}{item.checkBank}
+    {/foreach}
+    {newLine}&nbsp;Total:&nbsp;{tab}{total.number}{"       "}{tab}{formatCurrency(total.total)}{newLine}
+{/if}
+# /template
+
+# template textDisplay(takings)
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+            <pre>Comptes:<#section title="Billets" itemsArray="{takings.banknotes}" total="{takings.total.banknotes}"
+                /><#section title="Pièces" itemsArray="{takings.coins}" total="{takings.total.coins}"
+                /><#chequesSection title="Chèques" itemsArray="{takings.checks}" total="{takings.total.checks}"
+                />{newLine}Total:&nbsp;{tab}{formatCurrency(takings.total.general.total)}
+            </pre>
+        </div>
+    </div>
+# /template
+
+module.exports = textDisplay;
