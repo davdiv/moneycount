@@ -5,9 +5,9 @@ var startServer = function () {
     var app = express();
     app.use(express.static(path.join(__dirname, "build", "client")));
 
-    var server = app.listen(8000);
+    var server = app.listen(parseInt(process.env.PORT, 10) || 8080);
     server.on("listening", function () {
-        console.log("Web server started on http://localhost:%d", server.address().port);
+        console.log("Web server started at http://localhost:%d", server.address().port);
     });
 
 };

@@ -1,13 +1,14 @@
 var klass = require("hsp/klass");
 var Takings = require("./model/takings.hsp.js");
 var sheet = require("./sheet.hsp.js");
+var textDisplay = require("./text.hsp.js");
 
 var SimpleSumCtrl = klass({
     $constructor: function () {
         this.sumTakings = new Takings();
-        this.takings = [];
+        this.takings = [new Takings()];
         this.sumTakings.subTakings = this.takings;
-        this.activeTakings = this.sumTakings;
+        this.activeTakings = this.takings[0];
         this.edit = true;
     },
     clickTab: function (event,tab) {
@@ -41,7 +42,6 @@ var SimpleSumCtrl = klass({
 
 
 # template simpleSum using controller:SimpleSumCtrl
-    <input type="checkbox" model="{controller.edit}"/> Edition
     <ul class="nav nav-tabs">
         <li class="{'active': controller.activeTakings === controller.sumTakings}"><a onclick="{controller.clickTab(event,controller.sumTakings)}" href="#">Total</a></li>
         {foreach index,takings in controller.takings}
@@ -55,7 +55,13 @@ var SimpleSumCtrl = klass({
     </ul>
     <div class="tab-content">
         <div class="tab-pane active">
+            {if controller.activeTakings !== controller.sumTakings}
+            <div class="contextual hidden-xs hidden-sm">
+                <input type="checkbox" model="{controller.edit}"/> Edition
+            </div>
+            {/if}
             <#sheet takings="{controller.activeTakings}" edit="{controller.edit}" />
+            <#textDisplay takings="{controller.activeTakings}" />
         </div>
     </div>
 # /template

@@ -12,8 +12,8 @@ gulp.task("default", function () {
     gulp.src("src/client/**/*.hsp").pipe(newer({
         dest : "build/client",
         ext : ".js"
-    })).pipe(hspCompiler().on('error', gutil.log)).pipe(hspTranspiler().on('error', gutil.log)).pipe(gulp.dest("build/client"));
-    gulp.src(["src/client/**/*.html", "src/client/**/*.png"]).pipe(gulp.dest("build/client"));
+    })).pipe(hspCompiler().on('error', gutil.log)).pipe(gulp.dest("build/client"));
+    gulp.src(["src/client/**/*", "!**/*.hsp"]).pipe(gulp.dest("build/client"));
 });
 
 gulp.task("watch", function () {

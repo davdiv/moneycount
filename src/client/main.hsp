@@ -4,6 +4,19 @@ var sheet = require("./simpleSum.hsp.js");
 <div class="container-fluid">
 <#sheet />
 </div>
+<div id="footer">
+<div class="container">
+    <p class="text-muted">Cette application est open-source, sous licence <a href="http://www.gnu.org/licenses/agpl-3.0">AGPLv3</a>.
+    Son code source est disponible sur <a href="https://github.com/davdiv/moneycount">GitHub</a>.<br>
+    Elle utilise des composants provenant, sans modification, des sources suivantes:
+    <a href="http://getbootstrap.com/">bootstrap</a>,
+    <a href="http://hashspace.ariatemplates.com">hashspace</a>,
+    <a href="http://noder-js.ariatemplates.com">noder-js</a>,
+    <a href="http://www.designcontest.com">designcontest</a> et
+    <a href="http://antialiasfactory.deviantart.com/">antialiasfactory</a>.
+    </p>
+</div>
+</div>
 # /template
 
 module.exports = hello;
