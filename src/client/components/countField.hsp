@@ -35,11 +35,11 @@ var CountFieldController = klass({
         // change from the user when typing
         this.number = parseInt(this.stringNumber, 10);
         this.update();
+        this.onchange();
     },
     update : function () {
         this.total = this.unitValue * this.number;
         this.error = !(typeof this.number == "number") || isNaN(this.number);
-        this.onchange();
     },
     blur : function () {
         if (!this.error) {
@@ -51,6 +51,7 @@ var CountFieldController = klass({
         if (res >= 0) {
             this.number = res
         }
+        this.onchange();
     },
     clickSign : function (evt, amount) {
         this.add(amount);
